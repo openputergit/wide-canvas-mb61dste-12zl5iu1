@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>જય ભોલે રેસ્ટોરન્ટ - ગુજરાતી થાળી</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        * {
+            font-family: 'Noto Sans Gujarati', sans-serif;
+        }
+        .thali-img {
+            background: url('https://images.unsplash.com/photo-1626054195224-7b7637379cb8?q=80&w=1000&auto=format&fit=crop') center/cover;
+        }
+    </style>
+</head>
+<body class="bg-orange-50">
+    <nav class="bg-orange-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">જય ભોલે રેસ્ટોરન્ટ</h1>
+            <div class="space-x-4">
+                <a href="#menu" class="hover:text-orange-200">મેનુ</a>
+                <a href="#location" class="hover:text-orange-200">સ્થળ</a>
+                <a href="#scanner" class="hover:text-orange-200">સ્કેનર</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="thali-img h-96 flex items-center justify-center text-white">
+        <div class="text-center bg-black bg-opacity-50 p-8 rounded-lg">
+            <h2 class="text-4xl font-bold mb-4">સ્વાદિષ્ટ ગુજરાતી થાળી</h2>
+            <p class="text-xl">માત્ર ₹110/- (પાર્સલ ₹120/-)</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4">
+        <section id="menu" class="my-8">
+            <h2 class="text-3xl font-bold text-center mb-6">આજનું મેનુ</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">નિયમિત વાનગીઓ</h3>
+                    <ul class="space-y-2">
+                        <li>રોટલી</li>
+                        <li>દાળ-ભાત</li>
+                        <li>શાક</li>
+                        <li>કઢી</li>
+                        <li>પાપડ</li>
+                        <li>છાશ</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">આજની સ્પેશલ</h3>
+                    <ul class="space-y-2" id="todaysSpecial">
+                        <!-- Dynamically updated -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="location" class="my-8">
+            <h2 class="text-3xl font-bold text-center mb-6">અમારું સ્થળ</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                <p class="text-lg mb-4">છાયા ચોકી મેઈન રોડ, પારસ એપાર્ટમેન્ટની સામે,</p>
+                <p class="text-lg">પોરબંદર, ગુજરાત</p>
+                <div class="mt-4">
+                    <i class="bi bi-clock"></i> સવારે 11:00 થી રાત્રે 10:00
+                </div>
+                <div class="mt-2">
+                    <i class="bi bi-telephone"></i> +91 1234567890
+                </div>
+            </div>
+        </section>
+
+        <section id="scanner" class="my-8">
+            <h2 class="text-3xl font-bold text-center mb-6">QR સ્કેનર</h2>
+            <div class="max-w-md mx-auto">
+                <div id="reader" class="bg-white p-4 rounded-lg shadow-lg"></div>
+                <div id="result" class="mt-4 text-center"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-orange-600 text-white p-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>© 2024 જય ભોલે રેસ્ટોરન્ટ - સર્વાધિકાર સુરક્ષિત</p>
+        </div>
+    </footer>
+
+    <script>
+        // Daily specials based on day of week
+        const weeklySpecials = {
+            0: ['રિંગણનું શાક', 'મેથીની ભાજી', 'આલુ પરવળ'],
+            1: ['ભિંડા મસાલા', 'પાલક પનીર', 'દૂધી ચણા'],
+            2: ['મિક્સ વેજ', 'કઢી પકોડા', 'બટાકા રસાવાળા'],
+            3: ['ઉંધીયુ', 'પંજાબી કઢી', 'મેથી બટાકા'],
+            4: ['પાવ ભાજી', 'પનીર બટર મસાલા', 'સેવ ટમેટા'],
+            5: ['દાલ ફ્રાય', 'મશરૂમ મસાલા', 'રાજમા'],
+            6: ['છોળે', 'આલુ મટર', 'મિક્સ દાળ']
+        };
+
+        // Update today's special
+        const day = new Date().getDay();
+        const todaysSpecialEl = document.getElementById('todaysSpecial');
+        weeklySpecials[day].forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            todaysSpecialEl.appendChild(li);
+        });
+
+        // Initialize QR Scanner
+        function onScanSuccess(decodedText) {
+            document.getElementById('result').innerHTML = `
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
+                    મેનુ માહિતી મળી: ${decodedText}
+                </div>
+            `;
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
